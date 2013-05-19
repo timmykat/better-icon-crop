@@ -16,6 +16,16 @@
 	    margin:0;
 	    padding:0;
 	    height: 100%;
+	    font-family: Helvetica, Arial, sans-serif;
+	    font-size: 13px;
+	  }
+	  h1 {
+	    font-size: 22px;
+	    padding-top: 20px;
+	  }
+	  h2 {
+	    font-size: 14px;
+	    font-style: italic;
 	  }
 	  #container {
 	    width:100%;
@@ -24,9 +34,6 @@
 	  #content {
 	    text-align:center;
 	    width: 700px;
-	    background-color: #f3f3ff;
-	    border-left: solid 2px #999;
-	    border-right: solid 1px #999;
 	    margin: 0 auto;
 	    height:100%;
 	  }
@@ -37,18 +44,41 @@
 	    color: white;
 	    cursor: pointer;
 	  }
+	  .instructions {
+	    text-align: left;
+	    padding: 20px;
+	  }
+	  .code {
+	    text-align: left;
+	    overflow-x: scroll;
+	    padding: 5px;
+	    background-color: white;
+	    border: solid 1px #ccc;
+	  }
+	  ul li {
+	    list-style-type: none;
+	  }
 	</style>
 	<script>
     $(function() {
       var c; // This is where the crop data will be put
 	    $('.tiger img').icon_crop({
 	      crop_size: 200,
-	      onCropped: function (image) {
-	        i = image;
+	      onCropped: function (data) {
+	        d = data;
 	      }
 	    });
 	    $('.btn').click(function() {
-	      console.log(i);
+	      $('.results').html(
+	        "<ul>\n" +
+	        "  <li><code>d.scale: " + d.scale + " (scale percentage)</code></li>\n" +
+	        "  <li><code>d.crop.w: " + d.crop.w + " (crop area width)</code></li>\n" +
+	        "  <li><code>d.crop.h: " + d.crop.h + " (crop area height)</code></li>\n" +
+	        "  <li><code>d.crop.x: " + d.crop.x + " (crop x-offset)</code></li>\n" +
+	        "  <li><code>d.crop.y: " + d.crop.y + " (crop y-offset)</code></li>\n" +
+	        "  <li><code>d.imagemagick: '" + d.imagemagick + "' (imagemagick-ready resize+crop string)</code></li>\n" +
+	        "</ul>\n"
+	      ).addClass('code');
 	    });
 	  });
 	</script>
@@ -62,6 +92,39 @@
         <img src="images/tiger.jpg" />
       </div>
       <div><span class="btn">Get Crop Data!</span></div>
+      <div class="results"></div>
+      <div class="instructions">
+        <h1>Setup</h1>
+        <p>Include jQuery, jQuery UI, the jQuery UI theme, this plugin, and the accompanying css file:</p>
+        <ul class="code">
+          <li><xmp><script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script></xmp></li>
+          <li><xmp><script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script></xmp></li>
+          <li><xmp><link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" ></xmp></li>
+          <li><xmp><script src="jquery.icon_crop.js"></xmp></script></xmp></li>
+          <li><xmp><link rel="stylesheet" href="jquery.icon_crop.css" ></xmp></li>
+        </ul>
+        <p>Of course, you can also use local files for the libraries, as well as a js/css directory structure that works for you.</p>
+        <h1>Implementation</h1>
+        <p><b>Attach</b> the jquery.icon_crop object to the image you wish to turn into an icon:</p>
+        <div class="code">
+          <xmp>$('img').icon_crop({settings})</xmp>
+        </div>
+        <p><b>Settings</b> to pass  are the size of the crop area (defaults to 100x100) and a callback for using the image crop data:</p>
+        <ul>
+          <li><code>crop_size:  for square icons</code></li>
+          <li><code>crop_width: & crop_height:  for rectangular icons</code></li>
+          <li><code>onCropped:  the action callback</code></li>
+        </ul>
+        <p><b>Use</b> the data object in your callback:</p>
+        <ul>
+	        <li><code>d.scale: scale percentage</code></li>
+	        <li><code>d.crop.w: crop area width</code></li>
+	        <li><code>d.crop.h: crop area height</code></li>
+	        <li><code>d.crop.x: crop x-offset</code></li>
+	        <li><code>d.crop.y: crop y-offset</code></li>
+	        <li><code>d.imagemagick: imagemagick-ready resize+crop string</code></li>
+        </ul>
+      </div>
     </div>
   </div>
 </body>
