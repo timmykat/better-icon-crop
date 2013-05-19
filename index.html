@@ -43,12 +43,12 @@
       var c; // This is where the crop data will be put
 	    $('.tiger img').icon_crop({
 	      crop_size: 200,
-	      onCropped: function () {
-	        c = crop_params;
+	      onCropped: function (image) {
+	        i = image;
 	      }
 	    });
 	    $('.btn').click(function() {
-	      console.log(c);
+	      console.log(i);
 	    });
 	  });
 	</script>
