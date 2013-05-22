@@ -47,7 +47,11 @@
           x: - this.crop.w,
           y: - this.crop.h
         },
-        imagemagick: "-resize " + scale + "% -crop " + area + "+" + offset_x + "+" +  offset_y
+        imagemagick: "-resize " + scale + "% -crop " + area + "+" + offset_x + "+" +  offset_y,
+        minimagick: {
+          resize: String(scale) + "%",
+          crop: area + "+" + String(offset_x) + "+" +  String(offset_y)
+        }
       }
       return data;
     }
@@ -76,7 +80,7 @@
 
     crop_w = settings.crop_width || settings.crop_size;
     crop_h = settings.crop_height || settings.crop_size
-    
+
     return this.each( function() {
       if (!$(this).is('img')) {
         return;
@@ -88,7 +92,7 @@
 
         // Start with image center at center of crop zone
         var image = new Image(
-          $image.width(), 
+          $image.width(),
           $image.height(),
           (crop_w - $image.width())/2,
           (crop_h - $image.height())/2
@@ -98,6 +102,7 @@
         var zoom = new Zoom (Math.max(1, image.crop.w/image.o_w, image.crop.h/image.o_h), Math.min(image.o_w/image.crop.w, image.o_h/image.crop.h))
         $image.wrap('<div id="icon-crop"><div id="crop-box" style="width:' + image.crop.w + 'px; height: ' + image.crop.h + 'px" ></div></div>');
         $image.css({'left': image.left, 'top': image.top, 'width': image.w, 'height': image.h });
+        $('#icon-crop').css({'width' : image.w + 'px' });
         $('<div id="icon-crop-slider"></div>').appendTo('#icon-crop')
         $('#icon-crop-slider').slider({
           min: zoom.min * 100,
