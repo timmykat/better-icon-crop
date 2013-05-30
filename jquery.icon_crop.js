@@ -102,7 +102,6 @@
         var zoom = new Zoom (Math.max(1, image.crop.w/image.o_w, image.crop.h/image.o_h), Math.min(image.o_w/image.crop.w, image.o_h/image.crop.h))
         $image.wrap('<div id="icon-crop"><div id="crop-box" style="width:' + image.crop.w + 'px; height: ' + image.crop.h + 'px" ></div></div>');
         $image.css({'left': image.left, 'top': image.top, 'width': image.w, 'height': image.h });
-        $('#icon-crop').css({'width' : image.w + 'px' });
         $('<div id="icon-crop-slider"></div>').appendTo('#icon-crop')
         $('#icon-crop-slider').slider({
           min: zoom.min * 100,

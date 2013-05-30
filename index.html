@@ -58,11 +58,46 @@
 	  ul li {
 	    list-style-type: none;
 	  }
+	  fieldset {
+	    text-align: left;
+	    margin: 30px 10px 0 10px;
+	    border: none;
+	  }
 	</style>
 	<script>
     $(function() {
+      $('input:file').on('change', function(evt) {
+
+        //Only one file is allowed to be selected
+        f = evt.target.files[0]
+        if (!f.type.match('image.*')) {
+          alert('You need to select an image file!');
+          return false;
+        }
+        var reader = new FileReader();
+        reader.onload = (function(theFile) {
+          return function(e) {
+            $('.test-image').fadeOut().html('<img src="' + e.target.result + '" />')
+            $('.test-image img').icon_crop({
+	            crop_size: 200,
+	            onCropped: function (data) {
+	              d = data;
+	            }
+	          })
+	          $('.test-image').fadeIn();
+          }
+        })(f);
+
+        reader.readAsDataURL(f);
+      });
+      // Check for the various File API support.
+      if (window.File && window.FileReader && window.FileList && window.Blob) {
+        // alert('Great success! All the File APIs are supported.');
+      } else {
+        alert('The File APIs are not fully supported in this browser.');
+      }
       var c; // This is where the crop data will be put
-	    $('.tiger img').icon_crop({
+	    $('.test-image img').icon_crop({
 	      crop_size: 200,
 	      onCropped: function (data) {
 	        d = data;
@@ -88,10 +123,15 @@
     <div id="content">
       <h1>jquery.icon-crop</h1>
       <h2>A plug-in for cropping images to create icons</h2>
-      <div class="tiger">
+      <div class="test-image">
         <img src="images/tiger.jpg" />
       </div>
       <div><span class="btn">Get Crop Data!</span></div>
+      <div>
+        <fieldset>
+          <legend>Select a different image</legend>
+          <input type="file" name="test-image" id="test-image" />
+        </fieldset>
       <div class="results"></div>
       <div class="instructions">
         <h1>Setup</h1>
